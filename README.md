@@ -11,6 +11,17 @@ Requires a compiler.
 npm install node-fzy
 ```
 
+### API
+
+```typescript
+// Returns if there is a match
+fzy.hasMatch(needle: String, haystack: String): Boolean
+// Returns the score
+fzy.match(needle: String, haystack: String): Number
+// Returns the score and positions
+fzy.matchPositions(needle: String, haystack: String): [Number, Number[]]
+```
+
 ### Example
 
 ```javascript
