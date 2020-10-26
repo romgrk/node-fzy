@@ -1,0 +1,36 @@
+{
+  "name": "node-fzy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "dependencies": {
+    "nan": "^2.14.2",
+    "node-gyp": "^7.1.2",
+    "node-pre-gyp": "^0.15.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "install": "npm run configure && npm run build",
+    "build": "npx node-pre-gyp build",
+    "configure": "npx node-pre-gyp configure",
+    "configure:debug": "npx node-pre-gyp configure --debug"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/romgrk/node-fzy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/romgrk/node-fzy/issues"
+  },
+  "binary": {
+    "module_name": "node_fzy",
+    "module_path": "./lib/binding/{node_abi}-{platform}-{arch}/",
+    "remote_path": "./{module_name}/v{version}/",
+    "package_name": "{module_name}-{node_abi}-{platform}-{arch}.tar.gz",
+    "host": "https://node-fzy.s3.amazonaws.com"
+  },
+  "homepage": "https://github.com/romgrk/node-fzy#readme"
+}
