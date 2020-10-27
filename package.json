@@ -8,7 +8,9 @@
     "node-gyp": "^7.1.2",
     "node-pre-gyp": "^0.15.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "lodash.isequal": "^4.5.0"
+  },
   "scripts": {
     "install": "npm run configure && npm run build",
     "build": "npx node-pre-gyp build",

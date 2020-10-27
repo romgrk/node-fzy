@@ -15,12 +15,34 @@ npm install node-fzy
 
 ```typescript
 // Returns if there is a match
-fzy.hasMatch(needle: String, haystack: String): Boolean
+fzy.hasMatch(needle: String, haystack: String|String[]): Boolean
 // Returns the score
-fzy.match(needle: String, haystack: String): Number
+fzy.match(needle: String, haystack: String|String[]): Number
 // Returns the score and positions
-fzy.matchPositions(needle: String, haystack: String): [Number, Number[]]
+fzy.matchPositions(needle: String, haystack: String|String[]): [Number, Number[]]
+
+// Returns if there is a match
+fzy.hasMatchMulti(needle: String, haystack: String[]): Boolean
+// Returns the score
+fzy.matchMulti(needle: String, haystack: String[]): Number
+// Returns the score and positions
+fzy.matchPositionsMulti(needle: String, haystack: String[]): [Number, Number[]]
 ```
+
+The `*Multi` variants run the loop over haystacks in C, as opposed to the non-`*Multi`
+that run the loop over haystacks in javascript.
+
+The non-`*Multi` variants accepts either one haystack or a list of haystacks.
+
+There isn't much different but the `*Multi` variant are slightly faster (for large
+benchmarks). Here are the results for searching a one-letter needle in about 85k
+entries:
+
+| method         | time      |
+| -----          | -----     |
+| one-by-one-map | 138.214ms |
+| array          | 131.86ms  |
+
 
 ### Example
 
