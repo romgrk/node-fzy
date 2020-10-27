@@ -63,7 +63,6 @@ static void setup_match_struct(struct match_struct *match, const char *needle, c
 	}
 
 	if (is_case_sensitive) {
-		printf("sensitive: %i\n", is_case_sensitive);
 		match->needle = needle;
 		match->haystack = haystack;
 	} else {
