@@ -15,18 +15,18 @@ npm install node-fzy
 
 ```typescript
 // Returns if there is a match
-fzy.hasMatch(needle: String, haystack: String|String[]): Boolean
+function fzy.hasMatch(needle: String, haystack: String|String[]): Boolean;
 // Returns the score
-fzy.match(needle: String, haystack: String|String[]): Number
+function fzy.match(needle: String, haystack: String|String[]): Number;
 // Returns the score and positions
-fzy.matchPositions(needle: String, haystack: String|String[]): [Number, Number[]]
+function fzy.matchPositions(needle: String, haystack: String|String[]): [Number, Number[]];
 
 // Returns if there is a match
-fzy.hasMatchMulti(needle: String, haystack: String[]): Boolean
+function fzy.hasMatchMulti(needle: String, haystack: String[]): Boolean;
 // Returns the score
-fzy.matchMulti(needle: String, haystack: String[]): Number
+function fzy.matchMulti(needle: String, haystack: String[]): Number;
 // Returns the score and positions
-fzy.matchPositionsMulti(needle: String, haystack: String[]): [Number, Number[]]
+function fzy.matchPositionsMulti(needle: String, haystack: String[]): [Number, Number[]];
 ```
 
 The `*Multi` variants run the loop over haystacks in C, as opposed to the non-`*Multi`
@@ -42,6 +42,15 @@ the javascript is faster consistently, other times it switches
 | -----   | -----                            |
 | loop-js | 138.214ms                        |
 | loop-c  | 131.86ms                         |
+
+#### Speed
+
+To increase speed when searching for results, here are 2 things you can do:
+ - When you're ranking matches, dont score all of them! You need to eliminate bad
+     matches with `fzy.hasMatch` first. Those who pass may be scored.
+ - When you're search query is simply the previous query plus some new character,
+     don't search again on the whole set. Cache the last set of matches for the
+     previous query and re-use that subset to do the current search.
 
 #### Note
 
