@@ -1,6 +1,6 @@
 {
   "name": "node-fzy",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "",
   "main": "lib/index.js",
   "dependencies": {
@@ -27,7 +27,11 @@
     "type": "git",
     "url": "git+https://github.com/romgrk/node-fzy.git"
   },
-  "keywords": ["fzy", "fuzzy", "native"],
+  "keywords": [
+    "fzy",
+    "fuzzy",
+    "native"
+  ],
   "author": "romgrk <romgrk.cc@gmail.com>",
   "license": "ISC",
   "bugs": {
