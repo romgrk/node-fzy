@@ -9,20 +9,26 @@
     "node-pre-gyp": "^0.15.0"
   },
   "devDependencies": {
+    "jest": "^26.6.1",
     "lodash.isequal": "^4.5.0"
+  },
+  "jest": {
+    "testRegex": "test/.*.js$"
   },
   "scripts": {
     "install": "npm run configure && npm run build",
     "build": "npx node-pre-gyp build",
     "configure": "npx node-pre-gyp configure",
-    "configure:debug": "npx node-pre-gyp configure --debug"
+    "configure:debug": "npx node-pre-gyp configure --debug",
+    "test": "npx jest",
+    "test:watch": "npx jest --watch"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/romgrk/node-fzy.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["fzy", "fuzzy", "native"],
+  "author": "romgrk <romgrk.cc@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/romgrk/node-fzy/issues"

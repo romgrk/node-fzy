@@ -13,16 +13,13 @@
 
 #include "config.h"
 
-char *strcasechr(const char *s, char c) {
-	const char accept[3] = {c, toupper(c), 0};
-	return strpbrk(s, accept);
-}
-
-int has_match(const char *needle, const char *haystack) {
+int has_match(const char *needle, const char *haystack, int is_case_sensitive) {
 	while (*needle) {
 		char nch = *needle++;
 
-		if (!(haystack = strcasechr(haystack, nch))) {
+		const char accept[3] = {nch, is_case_sensitive ? 0 : toupper(nch), 0};
+
+		if (!(haystack = strpbrk(haystack, accept))) {
 			return 0;
 		}
 		haystack++;
@@ -37,6 +34,9 @@ int has_match(const char *needle, const char *haystack) {
 struct match_struct {
 	int needle_len;
 	int haystack_len;
+
+	const char *needle;
+	const char *haystack;
 
 	char lower_needle[MATCH_MAX_LEN];
 	char lower_haystack[MATCH_MAX_LEN];
@@ -54,7 +54,7 @@ static void precompute_bonus(const char *haystack, score_t *match_bonus) {
 	}
 }
 
-static void setup_match_struct(struct match_struct *match, const char *needle, const char *haystack) {
+static void setup_match_struct(struct match_struct *match, const char *needle, const char *haystack, int is_case_sensitive) {
 	match->needle_len = strlen(needle);
 	match->haystack_len = strlen(haystack);
 
@@ -62,11 +62,20 @@ static void setup_match_struct(struct match_struct *match, const char *needle, c
 		return;
 	}
 
-	for (int i = 0; i < match->needle_len; i++)
-		match->lower_needle[i] = tolower(needle[i]);
+	if (is_case_sensitive) {
+		printf("sensitive: %i\n", is_case_sensitive);
+		match->needle = needle;
+		match->haystack = haystack;
+	} else {
+		for (int i = 0; i < match->needle_len; i++)
+			match->lower_needle[i] = tolower(needle[i]);
 
-	for (int i = 0; i < match->haystack_len; i++)
-		match->lower_haystack[i] = tolower(haystack[i]);
+		for (int i = 0; i < match->haystack_len; i++)
+			match->lower_haystack[i] = tolower(haystack[i]);
+
+		match->needle = match->lower_needle;
+		match->haystack = match->lower_haystack;
+	}
 
 	precompute_bonus(haystack, match->match_bonus);
 }
@@ -76,15 +85,15 @@ static inline void match_row(const struct match_struct *match, int row, score_t 
 	int m = match->haystack_len;
 	int i = row;
 
-	const char *lower_needle = match->lower_needle;
-	const char *lower_haystack = match->lower_haystack;
+	const char *needle = match->needle;
+	const char *haystack = match->haystack;
 	const score_t *match_bonus = match->match_bonus;
 
 	score_t prev_score = SCORE_MIN;
 	score_t gap_score = i == n - 1 ? SCORE_GAP_TRAILING : SCORE_GAP_INNER;
 
 	for (int j = 0; j < m; j++) {
-		if (lower_needle[i] == lower_haystack[j]) {
+		if (needle[i] == haystack[j]) {
 			score_t score = SCORE_MIN;
 			if (!i) {
 				score = (j * SCORE_GAP_LEADING) + match_bonus[j];
@@ -104,12 +113,12 @@ static inline void match_row(const struct match_struct *match, int row, score_t 
 	}
 }
 
-score_t match(const char *needle, const char *haystack) {
+score_t match(const char *needle, const char *haystack, int is_case_sensitive) {
 	if (!*needle)
 		return SCORE_MIN;
 
 	struct match_struct match;
-	setup_match_struct(&match, needle, haystack);
+	setup_match_struct(&match, needle, haystack, is_case_sensitive);
 
 	int n = match.needle_len;
 	int m = match.haystack_len;
@@ -154,12 +163,12 @@ score_t match(const char *needle, const char *haystack) {
 	return last_M[m - 1];
 }
 
-score_t match_positions(const char *needle, const char *haystack, size_t *positions) {
+score_t match_positions(const char *needle, const char *haystack, size_t *positions, int is_case_sensitive) {
 	if (!*needle)
 		return SCORE_MIN;
 
 	struct match_struct match;
-	setup_match_struct(&match, needle, haystack);
+	setup_match_struct(&match, needle, haystack, is_case_sensitive);
 
 	int n = match.needle_len;
 	int m = match.haystack_len;
