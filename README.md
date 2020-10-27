@@ -43,6 +43,11 @@ the javascript is faster consistently, other times it switches
 | loop-js | 138.214ms                        |
 | loop-c  | 131.86ms                         |
 
+#### Note
+
+`.matchPositions*` returns the score and the positions. The positions are invalid if it
+doesn't match, which can be verified previously with `.hasMatch` or by checking if the
+score is `-Infinity`.
 
 ### Example
 
@@ -79,3 +84,8 @@ results.forEach(([score, positions], i) => {
   console.log([score, files[i], positions])
 })
 ```
+
+### Differences with the original fzy
+
+1. If the `needle` contains uppercase letters, the search is case-sensitive
+2. Perfect matches are returned with the highest score
