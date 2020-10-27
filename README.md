@@ -34,14 +34,14 @@ that run the loop over haystacks in javascript.
 
 The non-`*Multi` variants accepts either one haystack or a list of haystacks.
 
-There isn't much different but the `*Multi` variant are slightly faster (for large
-benchmarks). Here are the results for searching a one-letter needle in about 85k
-entries:
+The benchmarks in terms of performance for looping in javascript or in C are
+inconclusive. Below is one example but do not take that to mean anything, sometimes
+the javascript is faster consistently, other times it switches
 
-| method         | time      |
-| -----          | -----     |
-| one-by-one-map | 138.214ms |
-| array          | 131.86ms  |
+| method  | Searching for 'f' in 85k entries |
+| -----   | -----                            |
+| loop-js | 138.214ms                        |
+| loop-c  | 131.86ms                         |
 
 
 ### Example
